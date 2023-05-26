@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: pokemon-gateway
   labels:
-    name: pokemon-gateway
     app: pokemon-gateway
     tier: backend
 spec:
   ports:
-    - port: 80
-      targetport: 8080
+    - name: "80"
+      port: 80
+      targetPort: 8080
   selector:
     app: pokemon-gateway
     tier: backend
@@ -20,7 +20,7 @@ kind: Deployment
 metadata:
   name: pokemon-gateway
 spec:
-  slector:
+  selector:
     matchLabels:
       app: pokemon-gateway
       tier: backend
