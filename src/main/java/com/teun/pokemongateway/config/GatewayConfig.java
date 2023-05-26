@@ -11,7 +11,7 @@ public class GatewayConfig {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("backend", r -> r.path("/api/**")
-                        .uri("http://pokemon-service:8081"))  // Replace with the URL of your Spring Boot application
+                        .uri("http://pokemon-service:8081"))
                 .build();
     }
 }
