@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    title: pokemon-gateway
+    name: pokemon-gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
