@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: pokemon-gateway
-          image:
+          image: ghcr.io/teunbuis-semester6-pogokwetter/pokemon-gateway:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
