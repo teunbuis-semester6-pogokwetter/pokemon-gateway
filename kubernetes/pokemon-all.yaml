@@ -20,6 +20,7 @@ spec:
       targetPort: 8080
   selector:
     app: pokemon-gateway
+    tier: backend
   type: LoadBalancer
 ---
 apiVersion: apps/v1
@@ -56,11 +57,12 @@ metadata:
     tier: backend
 spec:
   ports:
-    - port: 80
+    - port: 8081
       targetPort: 8081
   selector:
     app: pokemon-service
     tier: backend
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -99,6 +101,7 @@ spec:
     app: pokemonimng-mysql
   ports:
     - protocol: TCP
+      name: "3307"
       port: 3307
       targetPort: 3307
   type: ClusterIP
@@ -118,42 +121,44 @@ spec:
     metadata:
       labels:
         app: pokemonimng-mysql
+        tier: backend
     spec:
       containers:
         - name: mysql
           image: mysql:latest
           ports:
-            - containerPort: 3306
+            - containerPort: 3307
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: Teun
             - name: MYSQL_TCP_PORT
-              value: 3307
+              value: "3307"
+            - name: MYSQL_DATABASE
+              value: pokemonimg
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: rabbitmq-mq
+  name: rabbit-mq
   namespace: pogokwetter
   labels:
-    app: pokemon-gateway
+    app: pokemon-redis
     tier: backend
 spec:
   selector:
     app: rabbit-mq
   ports:
-    - protocol: TCP
+    - name: amqp
       port: 5672
       targetPort: 5672
-    - protocol: TCP
+    - name: management
       port: 15672
       targetPort: 15672
-  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rabbitmq-mq
+  name: rabbit-mq
   namespace: pogokwetter
 spec:
   selector:
@@ -165,13 +170,21 @@ spec:
     metadata:
       labels:
         app: rabbit-mq
+        tier: backend
     spec:
       containers:
         - name: rabbit-mq
           image: rabbitmq:latest
           ports:
             - containerPort: 5672
+              name: amqp
             - containerPort: 15672
+              name: management
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              value: password
+            - name: RABBITMQ_DEFAULT_USER
+              value: user
 ---
 apiVersion: v1
 kind: Service
@@ -179,13 +192,15 @@ metadata:
   name: pokemon-redis
   namespace: pogokwetter
   labels:
-    app: pokemon-gateway
+    app: pokemon-redis
     tier: backend
 spec:
   selector:
     app: pokemon-redis
+    tier: backend
   ports:
     - protocol: TCP
+      name: "6379"
       port: 6379
       targetPort: 6379
   type: ClusterIP
@@ -204,10 +219,16 @@ spec:
   template:
     metadata:
       labels:
-        app: redis
+        app: pokemon-redis
+        tier: backend
     spec:
       containers:
         - name: pokemon-redis
           image: redis:latest
+          args:
+            - redis-server
+            - --requirepass
+            - Teun
           ports:
             - containerPort: 6379
+
