@@ -9,6 +9,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pokemon-gateway
+  namespace: pogokwetter
   labels:
     app: pokemon-gateway
     tier: backend
@@ -25,6 +26,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pokemon-gateway
+  namespace: pogokwetter
 spec:
   selector:
     matchLabels:
@@ -83,3 +85,129 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pokemonimg-mysql
+  namespace: pogokwetter
+  labels:
+    app: pokemonimng-mysql
+    tier: backend
+spec:
+  selector:
+    app: pokemonimng-mysql
+  ports:
+    - protocol: TCP
+      port: 3307
+      targetPort: 3307
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokemonimng-mysql
+  namespace: pogokwetter
+spec:
+  selector:
+    matchLabels:
+      app: pokemonimng-mysql
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pokemonimng-mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: Teun
+            - name: MYSQL_TCP_PORT
+              value: 3307
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-mq
+  namespace: pogokwetter
+  labels:
+    app: pokemon-gateway
+    tier: backend
+spec:
+  selector:
+    app: rabbit-mq
+  ports:
+    - protocol: TCP
+      port: 5672
+      targetPort: 5672
+    - protocol: TCP
+      port: 15672
+      targetPort: 15672
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-mq
+  namespace: pogokwetter
+spec:
+  selector:
+    matchLabels:
+      app: rabbit-mq
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rabbit-mq
+    spec:
+      containers:
+        - name: rabbit-mq
+          image: rabbitmq:latest
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pokemon-redis
+  namespace: pogokwetter
+  labels:
+    app: pokemon-gateway
+    tier: backend
+spec:
+  selector:
+    app: pokemon-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokemon-redis
+  namespace: pogokwetter
+spec:
+  selector:
+    matchLabels:
+      app: pokemon-redis
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: pokemon-redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379
