@@ -42,7 +42,7 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{env.REGISTRY}}/teunbuis-semester6-pogokwetter/pokemon-gateway${{ github.sha }}
+          ${{env.REGISTRY}}/teunbuis-semester6-pogokwetter/pokemon-gateway:${{ github.sha }}
           ${{env.REGISTRY}}/teunbuis-semester6-pogokwetter/pokemon-gateway:latest
 
     - name: Publish Docker image
