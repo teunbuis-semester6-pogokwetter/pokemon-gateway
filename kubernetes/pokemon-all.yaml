@@ -91,6 +91,47 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: user-service
+  namespace: pogokwetter
+  labels:
+    app: user-service
+    tier: backend
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+  selector:
+    app: user-service
+    tier: backend
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: pogokwetter
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-service
+        tier: backend
+    spec:
+      containers:
+        - name: user-service
+          image: ghcr.io/teunbuis-semester6-pogokwetter/user-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: pokemonimg-mysql
   namespace: pogokwetter
   labels:
@@ -135,6 +176,54 @@ spec:
               value: "3307"
             - name: MYSQL_DATABASE
               value: pokemonimg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-mysql
+  namespace: pogokwetter
+  labels:
+    app: user-mysql
+    tier: backend
+spec:
+  selector:
+    app: user-mysql
+  ports:
+    - protocol: TCP
+      name: "3308"
+      port: 3308
+      targetPort: 3308
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-mysql
+  namespace: pogokwetter
+spec:
+  selector:
+    matchLabels:
+      app: user-mysql
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-mysql
+        tier: backend
+    spec:
+      containers:
+        - name: user-mysql
+          image: mysql:latest
+          ports:
+            - containerPort: 3308
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: Teun
+            - name: MYSQL_TCP_PORT
+              value: "3308"
+            - name: MYSQL_DATABASE
+              value: user
 ---
 apiVersion: v1
 kind: Service
@@ -231,4 +320,3 @@ spec:
             - Teun
           ports:
             - containerPort: 6379
-
