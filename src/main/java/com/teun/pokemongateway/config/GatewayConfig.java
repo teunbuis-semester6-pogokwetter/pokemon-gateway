@@ -24,6 +24,10 @@ public class GatewayConfig {
                         .uri("http://user-service:8082"))
                 .route("auth", r -> r.path("/api/auth/**")
                         .uri("http://auth-service:8082"))
+                .route("read", r -> r.path("/api/userpokemonread/**")
+                        .uri("http://pokemonread-service:8085"))
+                .route("write", r -> r.path("/api/userpokemonwrite/**")
+                        .uri("http://pokemonwrite-service:8086"))
                 .build();
     }
     @Bean
@@ -42,6 +46,10 @@ public class GatewayConfig {
                         .uri("http://localhost:8082"))
                 .route("auth", r -> r.path("/api/auth/**")
                         .uri("http://localhost:8082"))
+                .route("read", r -> r.path("/api/userpokemonread/**")
+                        .uri("http://localhost:8085"))
+                .route("write", r -> r.path("/api/userpokemonwrite/**")
+                        .uri("http://localhost:8086"))
                 .build();
     }
 }
