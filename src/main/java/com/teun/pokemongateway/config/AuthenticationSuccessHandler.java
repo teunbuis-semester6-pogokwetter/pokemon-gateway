@@ -1,8 +1,8 @@
 package com.teun.pokemongateway.config;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -14,11 +14,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        // Custom logic after successful authentication
-        // For example, redirect to a specific URL or perform additional actions
-        // super.onAuthenticationSuccess(request, response, authentication);
-        response.sendRedirect("/user");
+                                        Authentication authentication) throws IOException {
+        response.sendRedirect("/");
     }
-
 }

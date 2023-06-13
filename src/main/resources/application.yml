@@ -1,7 +1,11 @@
 server:
   port: 8080
-
 spring:
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
   application:
     title: pokemon-gateway
     name: pokemon-gateway
@@ -12,21 +16,6 @@ spring:
           '[/**]':
             allowed-origins: "*"
             allowed-methods: "*"
-  main:
-    allow-bean-definition-overriding: true
-    web-application-type: reactive
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            client-id: 6f3319e50405dffeface
-            client-secret: 76ca565d66b035586538d95c8b8372eab4b4b05a
-            redirect-uri: http://34.140.150.168/api/user
-            scope:
-              - openid
-              - email
-              - profile
 logging:
   level:
     org:
