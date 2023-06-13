@@ -1,13 +1,13 @@
-spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            client-id: 6f3319e50405dffeface
-            client-secret: 76ca565d66b035586538d95c8b8372eab4b4b05a
-            redirect-uri: http://34.140.150.168/api/home/welcome
-            scope:
-              - openid
-              - email
-              - profile
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            client-id: 6f3319e50405dffeface
+#            client-secret: 76ca565d66b035586538d95c8b8372eab4b4b05a
+#            redirect-uri: http://34.140.150.168/api/home/welcome
+#            scope:
+#              - openid
+#              - email
+#              - profile
