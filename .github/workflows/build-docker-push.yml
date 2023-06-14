@@ -47,3 +47,21 @@ jobs:
 
     - name: Publish Docker image
       run: docker push ${{env.REGISTRY}}/teunbuis-semester6-pogokwetter/pokemon-gateway:${{ github.sha }}
+      
+    - name: install gcloud sdk
+      uses: cobraz/setup-gke-gcloud-auth-plugin@v1
+    - id: auth
+      uses: google-github-actions/auth@v0.4.0
+      with:
+        credentials_json: ${{ secrets.JSONAUTH }}
+        service_account: ${{ secrets.GCLOUD_ACCOUNT }}
+
+    - id: get-gke-credentials
+      uses: google-github-actions/get-gke-credentials@v0.4.0
+      with:
+        location: eu-west1
+        cluster_name: pogokwetter
+        
+    - name: Restart deployment
+      run: |
+        kubectl rollout restart deployment pokemon-gateway -n pogokwetter
