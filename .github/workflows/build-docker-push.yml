@@ -54,7 +54,7 @@ jobs:
       uses: google-github-actions/auth@v0.4.0
       with:
         credentials_json: ${{ secrets.JSON_AUTH }}
-        service_account: 'pogokwetter-build@handy-resolver-384812.iam.gserviceaccount.com'
+        service_account: 'teun-39@handy-resolver-384812.iam.gserviceaccount.com'
 
     - id: get-gke-credentials
       uses: google-github-actions/get-gke-credentials@v0.4.0
