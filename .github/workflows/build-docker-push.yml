@@ -59,7 +59,7 @@ jobs:
     - id: get-gke-credentials
       uses: google-github-actions/get-gke-credentials@v0.4.0
       with:
-        location: eu-west1
+        location: europe-west1
         cluster_name: pogokwetter
         
     - name: Restart deployment
