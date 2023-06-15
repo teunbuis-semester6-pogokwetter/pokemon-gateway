@@ -1,0 +1,134 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "pokemon-gateway Monitoring",
+    "tags": ["pokemon-gateway"],
+    "timezone": "browser",
+    "schemaVersion": 21,
+    "version": 0
+  },
+  "panels": [
+    {
+      "id": 1,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 6
+      },
+      "title": "HTTP Requests",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(http_server_requests_seconds_count{job=\"pokmemon-gateway\"}[1m])",
+          "legendFormat": "Requests",
+          "refId": "A"
+        }
+      ],
+      "legend": {
+        "show": true
+      },
+      "tooltip": {
+        "shared": true
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Requests/s",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "id": 2,
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 6
+      },
+      "title": "Memory Usage",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "jvm_memory_used_bytes{area=\"heap\", job=\"pokemon-gateway\", port=\"8080\"}",
+          "legendFormat": "Used",
+          "refId": "A"
+        },
+        {
+          "expr": "jvm_memory_max_bytes{area=\"heap\", job=\"pokemon-gateway\", port=\"8080\"}",
+          "legendFormat": "Max",
+          "refId": "B"
+        }
+      ],
+      "legend": {
+        "show": true
+      },
+      "tooltip": {
+        "shared": true
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": "Memory",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "5s",
+  "schemaVersion": 21,
+  "version": 1
+}

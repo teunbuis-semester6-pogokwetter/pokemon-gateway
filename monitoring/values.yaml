@@ -1,0 +1,40 @@
+server:
+  global:
+    scrape_interval: 15s # Scrape interval for metrics collection
+  extraArgs:
+    storage.tsdb.retention.time: 30d # Retention time for metrics storage
+
+alertmanager:
+  enabled: false # Set to true if you want to enable Prometheus Alertmanager
+
+alertmanagerFiles:
+  alertmanager.yml:
+    global:
+      resolve_timeout: 5m # Timeout for alert resolution
+    route:
+      group_by: ['pogokwetter'] # Group alerts by alert name
+      group_interval: 5m # Interval for grouping alerts
+      repeat_interval: 12h # Interval for repeating notifications
+      receiver: 'null' # Receiver for notifications, set to 'null' to disable
+
+prometheus:
+  additionalScrapeConfigs:
+    - job_name: 'pokemon-gateway'
+      metrics_path: '/actuator/prometheus' # Metrics endpoint exposed by the Spring Boot app
+      scrape_interval: 15s # Scrape interval for this specific job
+      static_configs:
+        - targets: ['pokemon-gateway:8080'] # Target address of the Spring Boot app
+
+  rbac:
+    create: true # Enable Role-Based Access Control (RBAC) for Prometheus
+
+  serviceMonitor:
+    enabled: true # Enable ServiceMonitor for Kubernetes
+    additionalLabels:
+      release: 'prometheus' # Additional labels for the ServiceMonitor
+
+  service:
+    type: ClusterIP # Service type for Prometheus server
+
+  ingress:
+    enabled: false
