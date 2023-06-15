@@ -28,6 +28,8 @@ public class GatewayConfig {
                         .uri("http://pokemonread-service:8085"))
                 .route("write", r -> r.path("/api/userpokemonwrite/**")
                         .uri("http://pokemonwrite-service:8086"))
+                .route("avg", r -> r.path("/api/avg/**")
+                        .uri("http://avg-concept:8087"))
                 .build();
     }
     @Bean
@@ -50,6 +52,8 @@ public class GatewayConfig {
                         .uri("http://localhost:8085"))
                 .route("write", r -> r.path("/api/userpokemonwrite/**")
                         .uri("http://localhost:8086"))
+                .route("avg", r -> r.path("/api/avg/**")
+                        .uri("http://localhost:8087"))
                 .build();
     }
 }

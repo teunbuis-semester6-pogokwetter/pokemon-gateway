@@ -23,8 +23,3 @@ logging:
         security: DEBUG
         cloud:
           gateway: DEBUG
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
